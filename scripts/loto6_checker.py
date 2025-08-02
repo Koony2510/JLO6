@@ -87,7 +87,7 @@ def main():
         return
 
     if found_data["carryover"] != "0円":
-        title = f"ロト6 第{found_data['round']}回 ({found_data['carryover']}) キャリーオーバー発生"
+        title = f"ロト6 {found_data['round']} ({found_data['carryover']}) キャリーオーバー発生"
         body = title
         create_github_issue(title, body)
     else:
