@@ -46,8 +46,8 @@ def parse_date_jp(text):
         return None
 
 def main():
-    target_date = date.today()  # 실제 운영 시
-    # target_date = date(2025, 7, 31)  # 테스트용
+    target_date = date(2025, 7, 31)  # 실제 운영 시
+    # target_date = date.today()  # 테스트용
 
     url = "https://www.ohtashp.com/topics/takarakuji/loto6/"
     res = requests.get(url)
