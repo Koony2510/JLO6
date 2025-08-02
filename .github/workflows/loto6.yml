@@ -2,8 +2,12 @@ name: Loto6 Carryover Checker
 
 on:
   schedule:
-    - cron: '5 13 * * 1,4'  # 매주 월요일, 목요일 오후 10:05 KST (11:05 UTC)
+    - cron: '5 13 * * 1,4'  # 매주 월요일, 목요일 오후 10:05 KST (UTC 13:05)
   workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   check-carryover:
@@ -21,7 +25,7 @@ jobs:
         run: pip install requests beautifulsoup4
 
       - name: 캐리오버 확인 및 이슈 생성
-        run: python loto6_checker.py
+        run: python scripts/loto6_checker.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
