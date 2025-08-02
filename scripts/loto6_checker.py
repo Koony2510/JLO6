@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, date
@@ -30,6 +31,7 @@ def create_github_issue(title, body):
         "assignees": github_assignees
     }
 
+    # JSON 전송 시 requests가 내부적으로 UTF-8 인코딩
     response = requests.post(api_url, headers=headers, json=payload)
     if response.status_code == 201:
         print("📌 GitHub 이슈가 성공적으로 생성되었습니다.")
@@ -46,11 +48,12 @@ def parse_date_jp(text):
         return None
 
 def main():
-    target_date = date(2025, 7, 31)  # 실제 운영 시
-    # target_date = date.today()  # 테스트용
+    # 매번 오늘 날짜로 바꿔도 됨 = date.today()
+    target_date = date(2025,7,31)
 
     url = "https://www.ohtashp.com/topics/takarakuji/loto6/"
     res = requests.get(url)
+    res.encoding = 'utf-8'  # 명시적으로 UTF-8로 설정
     soup = BeautifulSoup(res.text, 'html.parser')
 
     table = soup.find("table", class_="table")
@@ -61,7 +64,7 @@ def main():
     rows = table.find_all("tr")
     found_data = None
 
-    for row in rows[2:]:  # 헤더 + 소제목 제외
+    for row in rows[2:]:
         cols = row.find_all(["td", "th"])
         if len(cols) < 12:
             continue
@@ -85,7 +88,7 @@ def main():
 
     if found_data["carryover"] != "0円":
         title = f"ロト6 第{found_data['round']}回 ({found_data['carryover']}) キャリーオーバー発生"
-        body = f"{title} の抽選日: {found_data['date'].strftime('%Y-%m-%d')}"
+        body = title
         create_github_issue(title, body)
     else:
         print("캐리오버 없음. 이슈 생성하지 않음.")
