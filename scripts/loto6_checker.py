@@ -48,8 +48,8 @@ def parse_date_jp(text):
         return None
 
 def main():
-    # 매번 오늘 날짜로 바꿔도 됨 = date.today()
-    target_date = date(2025,5,22)
+    # 매번 오늘 날짜로 바꿔도 됨 =  date(2025,5,22)
+    target_date = date.today()
 
     url = "https://www.ohtashp.com/topics/takarakuji/loto6/"
     res = requests.get(url)
