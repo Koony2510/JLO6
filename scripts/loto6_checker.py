@@ -48,7 +48,7 @@ def parse_date_jp(text):
 
 def main():
     # 오늘 날짜 기준
-    target_date = date(2025, 7, 7)
+    target_date = date.today()
     # target_date = date(2025, 8, 2)  # 테스트용 고정값
     # target_date =  date.today()
     
@@ -90,7 +90,7 @@ def main():
     if found_data["carryover"] != "0円":
         title = f"ロト6 {found_data['round']} ({found_data['carryover']}) キャリーオーバー発生"
         body = f"{title}\n\n" \
-               f"📎 出처: [오타상 블로그](https://www.ohtashp.com/topics/takarakuji/loto6/)  \n" \
+               f"📎 출처: [오타상 블로그](https://www.ohtashp.com/topics/takarakuji/loto6/)  \n" \
                f"📎 공식: [미즈호 은행 로또6 페이지](https://www.mizuhobank.co.jp/takarakuji/check/loto/loto6/index.html)"
         create_github_issue(title, body)
     else:
