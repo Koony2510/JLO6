@@ -31,7 +31,6 @@ def create_github_issue(title, body):
         "assignees": github_assignees
     }
 
-    # JSON 전송 시 requests가 내부적으로 UTF-8 인코딩
     response = requests.post(api_url, headers=headers, json=payload)
     if response.status_code == 201:
         print("📌 GitHub 이슈가 성공적으로 생성되었습니다.")
@@ -48,12 +47,14 @@ def parse_date_jp(text):
         return None
 
 def main():
-    # 매번 오늘 날짜로 바꿔도 됨 =  date(2025,5,22)
-    target_date = date.today()
-
+    # 오늘 날짜 기준
+    target_date = date(2025, 7, 7)
+    # target_date = date(2025, 8, 2)  # 테스트용 고정값
+    # target_date =  date.today()
+    
     url = "https://www.ohtashp.com/topics/takarakuji/loto6/"
     res = requests.get(url)
-    res.encoding = 'utf-8'  # 명시적으로 UTF-8로 설정
+    res.encoding = 'utf-8'
     soup = BeautifulSoup(res.text, 'html.parser')
 
     table = soup.find("table", class_="table")
@@ -88,7 +89,9 @@ def main():
 
     if found_data["carryover"] != "0円":
         title = f"ロト6 {found_data['round']} ({found_data['carryover']}) キャリーオーバー発生"
-        body = title
+        body = f"{title}\n\n" \
+               f"📎 出처: [오타상 블로그](https://www.ohtashp.com/topics/takarakuji/loto6/)  \n" \
+               f"📎 공식: [미즈호 은행 로또6 페이지](https://www.mizuhobank.co.jp/takarakuji/check/loto/loto6/index.html)"
         create_github_issue(title, body)
     else:
         print("캐리오버 없음. 이슈 생성하지 않음.")
